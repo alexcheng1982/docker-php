@@ -86,11 +86,8 @@ for version in "${versions[@]}"; do
 	# order here controls the order of the library/ file
 	for suite in \
 		bullseye \
-		buster \
-		alpine3.15 \
-		alpine3.14 \
 	; do
-		for variant in cli apache fpm zts; do
+		for variant in apache; do
 			if [[ "$suite" = alpine* ]]; then
 				if [ "$variant" = 'apache' ]; then
 					continue

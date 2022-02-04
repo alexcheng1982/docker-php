@@ -49,12 +49,12 @@ for version; do
 		if [ "$suite" != "$alpineVer" ]; then
 			from="alpine:$alpineVer"
 		else
-			from="debian:$suite-slim"
+			from="phusion/baseimage:focal-1.1.0"
 		fi
 		export from alpineVer
 
 		case "$variant" in
-			apache) cmd='["apache2-foreground"]' ;;
+			apache) cmd='["/sbin/my_init"]' ;;
 			fpm) cmd='["php-fpm"]' ;;
 			*) cmd='["php", "-a"]' ;;
 		esac

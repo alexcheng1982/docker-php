@@ -4,7 +4,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM debian:bullseye-slim
+FROM phusion/baseimage:focal-1.1.0
 
 # prevent Debian's PHP packages from being installed
 # https://github.com/docker-library/php/pull/542
@@ -26,7 +26,8 @@ ENV PHPIZE_DEPS \
 		libc-dev \
 		make \
 		pkg-config \
-		re2c
+		re2c \
+		libonig5
 
 # persistent / runtime deps
 RUN set -eux; \
@@ -279,8 +280,11 @@ ENTRYPOINT ["docker-php-entrypoint"]
 # https://httpd.apache.org/docs/2.4/stopping.html#gracefulstop
 STOPSIGNAL SIGWINCH
 
-COPY apache2-foreground /usr/local/bin/
+RUN mkdir /etc/service/apache2
+COPY apache2-foreground /etc/service/apache2/run
+RUN chmod +x /etc/service/apache2/run
+
 WORKDIR /var/www/html
 
 EXPOSE 80
-CMD ["apache2-foreground"]
+CMD ["/sbin/my_init"]
